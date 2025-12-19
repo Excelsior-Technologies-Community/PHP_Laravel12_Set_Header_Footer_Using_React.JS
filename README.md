@@ -221,7 +221,7 @@ export default function AppLayout({ children }) {
 
 ## 🖥STEP 8: Pages 
 
-### Home.jsx
+### resources/js/Pages/Home.jsx
 
 ```jsx
 import AppLayout from '@/Layouts/AppLayout'
@@ -235,7 +235,7 @@ export default function Home() {
 }
 ```
 
-### About.jsx
+### resources/js/Pages/About.jsx
 
 ```jsx
 import AppLayout from '@/Layouts/AppLayout'

@@ -1,0 +1,9 @@
+import { Head, useForm, usePage } from '@inertiajs/react'
+import AppLayout from '@/Layouts/AppLayout'
+
+export default function Contact() {
+    const { site = {}, flash = {} } = usePage().props
+    const { data, setData, post, processing, errors } = useForm({ name: '', email: '', subject: '', message: '' })
+    const submit = (event) => { event.preventDefault(); post('/contact') }
+    return <AppLayout><Head title="Contact" /><div className="mx-auto max-w-3xl"><h1 className="text-4xl font-bold">Let's talk</h1><p className="mt-3 text-gray-600">{site.contact_intro || 'Tell us what you are building and how we can help.'}</p>{flash.success && <p className="mt-6 rounded bg-green-100 p-4 text-green-800">{flash.success}</p>}<form onSubmit={submit} className="mt-8 space-y-5">{[['name','Name'],['email','Email'],['subject','Subject']].map(([key, label]) => <div key={key}><label className="mb-1 block font-medium">{label}</label><input value={data[key]} onChange={e => setData(key, e.target.value)} type={key === 'email' ? 'email' : 'text'} className="w-full rounded border-gray-300" />{errors[key] && <p className="text-sm text-red-600">{errors[key]}</p>}</div>)}<div><label className="mb-1 block font-medium">Message</label><textarea value={data.message} onChange={e => setData('message', e.target.value)} rows="6" className="w-full rounded border-gray-300" />{errors.message && <p className="text-sm text-red-600">{errors.message}</p>}</div><button disabled={processing} className="rounded bg-slate-900 px-6 py-3 font-semibold text-white disabled:opacity-50">Send message</button></form></div></AppLayout>
+}

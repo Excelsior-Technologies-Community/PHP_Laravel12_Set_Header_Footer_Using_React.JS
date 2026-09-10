@@ -1,0 +1,4 @@
+import { Head } from '@inertiajs/react'
+import AppLayout from '@/Layouts/AppLayout'
+const services = [['Web applications', 'Scalable Laravel and React products built around your workflow.'], ['Product design', 'Clear interfaces that make complex work easier to understand.'], ['Growth support', 'Ongoing improvements, performance work, and dependable maintenance.']]
+export default function Services() { return <AppLayout><Head title="Services" /><h1 className="text-4xl font-bold">Services</h1><div className="mt-10 grid gap-6 md:grid-cols-3">{services.map(([title, text]) => <article key={title} className="rounded border bg-white p-6 shadow-sm"><h2 className="text-xl font-semibold">{title}</h2><p className="mt-3 text-gray-600">{text}</p></article>)}</div></AppLayout> }

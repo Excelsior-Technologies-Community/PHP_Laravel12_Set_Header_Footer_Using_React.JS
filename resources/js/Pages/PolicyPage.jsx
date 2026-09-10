@@ -1,0 +1,3 @@
+import { Head } from '@inertiajs/react'
+import AppLayout from '@/Layouts/AppLayout'
+export default function PolicyPage({ title }) { return <AppLayout><Head title={title} /><article className="prose max-w-3xl"><h1>{title}</h1><p>This page explains the policies that govern use of our services. We handle information responsibly, communicate clearly, and work with customers in good faith.</p><h2>Questions</h2><p>Contact us for clarification about this policy or your account.</p></article></AppLayout> }

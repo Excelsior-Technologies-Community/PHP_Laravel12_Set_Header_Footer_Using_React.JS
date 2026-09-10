@@ -1,0 +1,4 @@
+import { Head } from '@inertiajs/react'
+import AppLayout from '@/Layouts/AppLayout'
+const questions = [['How do we start?', 'Send us a message with your goals and timeline. We will reply with the best next step.'], ['How long does a project take?', 'Most projects take between four and twelve weeks, depending on scope.'], ['Do you support existing applications?', 'Yes. We can audit, improve, and extend Laravel and React applications.']]
+export default function FAQ() { return <AppLayout><Head title="FAQ" /><div className="mx-auto max-w-3xl"><h1 className="text-4xl font-bold">Frequently asked questions</h1><div className="mt-8 space-y-3">{questions.map(([question, answer]) => <details key={question} className="rounded border p-5"><summary className="cursor-pointer font-semibold">{question}</summary><p className="mt-3 text-gray-600">{answer}</p></details>)}</div></div></AppLayout> }

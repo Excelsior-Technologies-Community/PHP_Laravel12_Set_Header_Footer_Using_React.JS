@@ -6,5 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactMessage extends Model
 {
-    protected $fillable = ['name', 'email', 'subject', 'message', 'status'];
+    protected $fillable = [
+        'name',
+        'email',
+        'subject',
+        'message',
+        'status',
+        'priority',
+        'is_favorite',
+    ];
+
+    protected $casts = [
+        'is_favorite' => 'boolean',
+    ];
 }

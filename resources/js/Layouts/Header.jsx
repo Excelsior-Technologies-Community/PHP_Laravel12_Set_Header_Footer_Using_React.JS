@@ -1,11 +1,14 @@
-import { Link, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import { useState } from 'react'
 import ThemeToggle from '@/Components/ThemeToggle'
 
 export default function Header() {
     const { site = {} } = usePage().props
 
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] =
+        useState(false)
+
+    const [search, setSearch] = useState('')
 
     const currentUrl = window.location.pathname
 
@@ -41,18 +44,39 @@ export default function Header() {
         setMobileMenuOpen(false)
     }
 
+    const submitSearch = (event) => {
+        event.preventDefault()
+
+        const value = search.trim()
+
+        if (!value) {
+            return
+        }
+
+        router.get(
+            '/search',
+            { q: value },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        )
+
+        closeMobileMenu()
+    }
+
     return (
         <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
 
             <div className="container mx-auto px-6">
 
-                <div className="flex min-h-[72px] items-center justify-between">
+                <div className="flex min-h-[72px] items-center justify-between gap-4">
 
-                    {/* Logo / Brand */}
+                    {/* Logo */}
                     <Link
                         href="/"
                         onClick={closeMobileMenu}
-                        className="flex items-center"
+                        className="flex shrink-0 items-center"
                     >
                         {site.logo_url ? (
                             <img
@@ -62,10 +86,9 @@ export default function Header() {
                             />
                         ) : (
                             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-lg font-bold text-white dark:bg-white dark:text-gray-900">
-                                {(
-                                    site.site_name ||
-                                    'M'
-                                ).charAt(0).toUpperCase()}
+                                {(site.site_name || 'M')
+                                    .charAt(0)
+                                    .toUpperCase()}
                             </div>
                         )}
 
@@ -74,16 +97,15 @@ export default function Header() {
                         </span>
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden items-center gap-6 md:flex">
+                    {/* Desktop */}
+                    <div className="hidden items-center gap-4 lg:flex">
 
                         <nav className="flex items-center gap-1">
-
                             {navigation.map((item) => (
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                                    className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
                                         item.active
                                             ? 'bg-slate-900 text-white dark:bg-white dark:text-gray-900'
                                             : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white'
@@ -92,15 +114,38 @@ export default function Header() {
                                     {item.name}
                                 </Link>
                             ))}
-
                         </nav>
+
+                        {/* Search */}
+                        <form
+                            onSubmit={submitSearch}
+                            className="flex items-center"
+                        >
+                            <input
+                                type="search"
+                                value={search}
+                                onChange={(e) =>
+                                    setSearch(e.target.value)
+                                }
+                                placeholder="Search..."
+                                className="w-36 rounded-l-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-cyan-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                            />
+
+                            <button
+                                type="submit"
+                                className="rounded-r-lg bg-slate-900 px-3 py-2 text-white dark:bg-white dark:text-gray-900"
+                                aria-label="Search"
+                            >
+                                🔍
+                            </button>
+                        </form>
 
                         <ThemeToggle />
 
                     </div>
 
-                    {/* Mobile Controls */}
-                    <div className="flex items-center gap-2 md:hidden">
+                    {/* Mobile controls */}
+                    <div className="flex items-center gap-2 lg:hidden">
 
                         <ThemeToggle />
 
@@ -115,45 +160,47 @@ export default function Header() {
                             aria-label="Toggle navigation menu"
                         >
                             {mobileMenuOpen ? (
-                                <svg
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
+                                <span className="text-xl">
+                                    ✕
+                                </span>
                             ) : (
-                                <svg
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                </svg>
+                                <span className="text-xl">
+                                    ☰
+                                </span>
                             )}
                         </button>
 
                     </div>
+
                 </div>
 
-                {/* Mobile Navigation */}
+                {/* Mobile menu */}
                 {mobileMenuOpen && (
-                    <div className="border-t border-gray-200 py-4 dark:border-gray-700 md:hidden">
+                    <div className="border-t border-gray-200 py-4 dark:border-gray-700 lg:hidden">
+
+                        <form
+                            onSubmit={submitSearch}
+                            className="mb-4 flex"
+                        >
+                            <input
+                                type="search"
+                                value={search}
+                                onChange={(e) =>
+                                    setSearch(e.target.value)
+                                }
+                                placeholder="Search website..."
+                                className="min-w-0 flex-1 rounded-l-lg border border-gray-300 bg-white px-3 py-3 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                            />
+
+                            <button
+                                type="submit"
+                                className="rounded-r-lg bg-slate-900 px-4 text-white dark:bg-white dark:text-gray-900"
+                            >
+                                🔍
+                            </button>
+                        </form>
 
                         <nav className="flex flex-col gap-1">
-
                             {navigation.map((item) => (
                                 <Link
                                     key={item.name}
@@ -168,7 +215,6 @@ export default function Header() {
                                     {item.name}
                                 </Link>
                             ))}
-
                         </nav>
 
                     </div>
